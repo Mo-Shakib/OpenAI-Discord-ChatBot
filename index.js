@@ -15,7 +15,7 @@ const client = new Client({
 
 client.once(Events.ClientReady, (c) => {
   console.log(
-    `OpenAI Bot is up and running! Logged in as ${c.user.tag} on ${c.guilds.cache.size} servers. \n \nDeveloped by: Mohammad Shakib\nhttps://mo-shakib.github.io \nPowered by OpenAI API`
+    `\n-> OpenAI Bot is up and running! Logged in as ${c.user.tag} on ${c.guilds.cache.size} servers.\n \n\tDeveloped by: Mohammad Shakib (https://mo-shakib.github.io) \n\tPowered by OpenAI (https://openai.com)\n`
   );
 });
 
@@ -26,6 +26,9 @@ client.on(Events.MessageCreate, async (message) => {
     client.channels
       .fetch(message.channelId)
       .then((channel) => channel.send(answer));
+
+    console.log(new Date().toLocaleString());
+    console.log(`\n[*] ${message.author.username} asked: ${prompt} \n[=] OpenAI Bot answered: ${answer}\n`);
   }
 });
 
