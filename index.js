@@ -25,17 +25,14 @@ client.on("messageCreate", async function (message) {
     if (message.author.bot) return;
     console.log(message.content);
     const gptResponse = await openai.createCompletion({
-      module: "davinci",
+      model: "text-davinci-002",
       prompt: `ChatGPT is a friendly chatbot. \n\ ChatGPT: Hello! How are you today? \n\ ${message.author.username}: ${message.content} \n\ ChatGPT:`,
-      maxTokens: 100,
-      temperature: 0.9,
-        topP: 1,
-        presencePenalty: 0,
-        frequencyPenalty: 0,
-        bestOf: 1,
-        n: 1,
-        stream: false,
-        stop: ["\n", " ChatGPT:", " ${message.author.username}:"]
+      temperature: 0.7,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+      stop: ["\n", " ChatGPT:", " ${message.author.username}:"],
     });
 
     message.reply(`${gptResponse.data.choices[0].text}`);
