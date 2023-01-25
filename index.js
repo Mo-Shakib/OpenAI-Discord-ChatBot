@@ -1,7 +1,10 @@
-require("dotenv").config();
+const { ask } = require("./openai.js", "dotenv"); //import the "ask" function from the "ai.js" file
+const { Client, Events, GatewayIntentBits } = require("discord.js"); //v14.6.0
 
-// Prepare to connect to the Discord API
-const { Client, GatewayIntentBits } = require("discord.js");
+// Get the token from the .env file
+const token = process.env.DISCORD_TOKEN;
+
+// Create a new client instance
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -10,38 +13,21 @@ const client = new Client({
   ],
 });
 
-// Prepare to connection to OpenAI API
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-  organization: process.env.OPENAI_ORG,
-  apiKey: process.env.OPENAI_KEY,
+client.once(Events.ClientReady, (c) => {
+  console.log(
+    `OpenAI Bot is up and running! Logged in as ${c.user.tag} on ${c.guilds.cache.size} servers. \n \nDeveloped by: Mohammad Shakib\nhttps://mo-shakib.github.io \nPowered by OpenAI API`
+  );
 });
-const openai = new OpenAIApi(configuration);
 
-// Check for when a message on discord is sent
-client.on("messageCreate", async function (message) {
-  try {
-    // Don't respond to messages from bots
-    if (message.author.bot) return;
-    console.log(message.content);
-    const gptResponse = await openai.createCompletion({
-      model: "text-davinci-002",
-      prompt: `ChatGPT is a friendly chatbot. \n\ ChatGPT: Hello! How are you today? \n\ ${message.author.username}: ${message.content} \n\ ChatGPT:`,
-      temperature: 0.7,
-      max_tokens: 256,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      stop: ["\n", " ChatGPT:", " ${message.author.username}:"],
-    });
-
-    message.reply(`${gptResponse.data.choices[0].text}`);
-    return;
-  } catch (err) {
-    console.log(err);
+client.on(Events.MessageCreate, async (message) => {
+  if (message.content.substring(0, 1) === ">") {
+    const prompt = message.content.substring(1); //remove the exclamation mark from the message
+    const answer = await ask(prompt); //prompt GPT-3
+    client.channels
+      .fetch(message.channelId)
+      .then((channel) => channel.send(answer));
   }
 });
 
-// Connect to the Discord API
-client.login(process.env.DISCORD_TOKEN);
-console.log("ChatGPT bot is up and running");
+// Log in to Discord with your client's token
+client.login(token);
