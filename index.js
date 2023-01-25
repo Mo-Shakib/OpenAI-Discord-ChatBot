@@ -47,4 +47,4 @@ client.on("messageCreate", async function (message) {
 
 // Connect to the Discord API
 client.login(process.env.DISCORD_TOKEN);
-console.log("Bot is running");
+console.log("ChatGPT bot is up and running");
