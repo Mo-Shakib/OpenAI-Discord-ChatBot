@@ -14,7 +14,7 @@ You will need the following things properly installed on your computer.
 ## Installing
 #### Clone the repository
 ```
-https://github.com/Mo-Shakib/chatGPT-discord-bot.git
+https://github.com/Mo-Shakib/OpenAI-Discord-ChatBot.git
 ```
 
 #### Install the dependencies
