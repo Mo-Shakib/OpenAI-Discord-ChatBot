@@ -1,7 +1,8 @@
 require("dotenv").config();
 const ask = require("./openai.js").ask;
 //import the "ask" function from the "ai.js" file
-const { Client, Events, GatewayIntentBits } = require("discord.js"); //v14.6.0
+const { Client, GatewayIntentBits } = require("discord.js");
+const { EventEmitter } = require('events'); //v14.6.0
 
 // Get the token from the .env file
 const token = process.env.DISCORD_TOKEN;
