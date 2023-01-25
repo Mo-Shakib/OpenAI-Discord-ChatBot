@@ -1,2 +1,1 @@
-# chatGPT-discord-bot
-chatGPT discord chatbot
+# OpenAI Discord ChatBot
